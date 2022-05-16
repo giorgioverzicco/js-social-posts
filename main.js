@@ -66,8 +66,24 @@ let likedPosts = [];
 const container = document.querySelector("#container");
 for (let i = 0; i < posts.length; i++) {
   const post = document.querySelector("#tpl-post").content.cloneNode(true);
-  post.querySelector(".post-meta__icon img").src = posts[i].author.image;
-  post.querySelector(".post-meta__icon img").alt = posts[i].author.name;
+
+  if (!posts[i].author.image) {
+    const img = post.querySelector(".post-meta__icon img");
+    img.parentElement.removeChild(img);
+
+    const div = document.createElement("div");
+    div.classList.add("profile-pic", "profile-pic-default");
+
+    const span = document.createElement("span");
+    span.innerHTML = posts[i].author.name[0] + posts[i].author.name[posts[i].author.name.length - 1];
+
+    div.append(span);
+    post.querySelector(".post-meta__icon").appendChild(div);
+  } else {
+    post.querySelector(".post-meta__icon img").src = posts[i].author.image;
+    post.querySelector(".post-meta__icon img").alt = posts[i].author.name;
+  }
+
   post.querySelector(".post-meta__author").innerHTML = posts[i].author.name;
   post.querySelector(".post__text").innerHTML = posts[i].content;
   post.querySelector(".post__image img").src = posts[i].media;
