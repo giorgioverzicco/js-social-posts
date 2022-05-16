@@ -60,3 +60,17 @@ const posts = [
     created: "2021-03-05",
   },
 ];
+
+const container = document.querySelector("#container");
+
+for (let i = 0; i < posts.length; i++) {
+  const post = document.querySelector("#tpl-post").content.cloneNode(true);
+  post.querySelector(".post-meta__icon img").src = posts[i].author.image;
+  post.querySelector(".post-meta__icon img").alt = posts[i].author.name;
+  post.querySelector(".post-meta__author").innerHTML = posts[i].author.name;
+  post.querySelector(".post__text").innerHTML = posts[i].content;
+  post.querySelector(".post__image img").src = posts[i].media;
+  post.querySelector(".like-button").setAttribute("data-postid", posts[i].id);
+  post.querySelector(".js-likes-counter").innerHTML = posts[i].likes;
+  container.append(post);
+}
