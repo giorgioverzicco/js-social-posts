@@ -73,6 +73,10 @@ for (let i = 0; i < posts.length; i++) {
   post.querySelector(".post__image img").src = posts[i].media;
   post.querySelector(".like-button").setAttribute("data-postid", posts[i].id);
   post.querySelector(".js-likes-counter").innerHTML = posts[i].likes;
+
+  const date = posts[i].created.split("-").reverse().join("/");
+  post.querySelector(".post-meta__time").innerHTML = date;
+
   container.append(post);
 }
 
