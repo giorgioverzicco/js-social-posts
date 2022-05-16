@@ -61,8 +61,9 @@ const posts = [
   },
 ];
 
-const container = document.querySelector("#container");
+let likedPosts = [];
 
+const container = document.querySelector("#container");
 for (let i = 0; i < posts.length; i++) {
   const post = document.querySelector("#tpl-post").content.cloneNode(true);
   post.querySelector(".post-meta__icon img").src = posts[i].author.image;
@@ -73,4 +74,25 @@ for (let i = 0; i < posts.length; i++) {
   post.querySelector(".like-button").setAttribute("data-postid", posts[i].id);
   post.querySelector(".js-likes-counter").innerHTML = posts[i].likes;
   container.append(post);
+}
+
+const postElements = document.querySelectorAll(".post");
+for (let i = 0; i < postElements.length; i++) {
+  const post = postElements[i];
+
+  const likeBtn = post.querySelector(".like-button");
+  const likeCounter = post.querySelector(".js-likes-counter");
+  const postId = likeBtn.getAttribute("data-postid");
+
+  likeBtn.addEventListener("click", function () {
+    if (likeBtn.classList.contains("like-button--liked")) {
+      likedPosts = likedPosts.filter((id) => id !== postId);
+      likeBtn.classList.remove("like-button--liked");
+      likeCounter.innerHTML--;
+    } else {
+      likedPosts.push(postId);
+      likeBtn.classList.add("like-button--liked");
+      likeCounter.innerHTML++;
+    }
+  });
 }
