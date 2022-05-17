@@ -110,7 +110,15 @@ function setUserImage(author, post) {
 
 function getNameInitials(name) {
   const arr = name.split(" ");
-  return arr[0][0] + arr[1][0];
+
+  let initials = "";
+  let i = 0;
+  while (i < arr.length && i < 2) {
+    initials += arr[i][0];
+    i++;
+  }
+
+  return initials;
 }
 
 function italianDateFormat(date) {
