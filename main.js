@@ -128,11 +128,11 @@ for (let i = 0; i < postElements.length; i++) {
       // that we need to remove, because we dont have an incremental
       // index that matches the post id to use Array.splice.
       likedPosts = likedPosts.filter((id) => id !== postId);
-      likeBtn.classList.remove("like-button--liked");
+      this.classList.remove("like-button--liked");
       likeCounter.innerHTML--;
     } else {
       likedPosts.push(postId);
-      likeBtn.classList.add("like-button--liked");
+      this.classList.add("like-button--liked");
       likeCounter.innerHTML++;
     }
   });
