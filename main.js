@@ -80,7 +80,8 @@ for (let i = 0; i < posts.length; i++) {
 
     // make a span containing user initials of the name
     const span = document.createElement("span");
-    span.innerHTML = posts[i].author.name[0] + posts[i].author.name[posts[i].author.name.length - 1];
+    const splitedName = posts[i].author.name.split(" ");
+    span.innerHTML = splitedName[0][0] + splitedName[1][0];
 
     // append the span to the div with default css
     div.append(span);
