@@ -135,16 +135,16 @@ function addLikeBtnEvent(post) {
   likeBtn.addEventListener("click", function (e) {
     e.preventDefault();
 
-    if (this.classList.contains("like-button--liked")) {
+    this.classList.toggle("like-button--liked");
+
+    if (likedPosts.includes(postId)) {
       // we use filter to reassign the array without the post id
       // that we need to remove, because we dont have an incremental
       // index that matches the post id to use Array.splice.
       likedPosts = likedPosts.filter((id) => id !== postId);
-      this.classList.remove("like-button--liked");
       likeCounter.innerHTML--;
     } else {
       likedPosts.push(postId);
-      this.classList.add("like-button--liked");
       likeCounter.innerHTML++;
     }
   });
