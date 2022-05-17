@@ -119,7 +119,9 @@ for (let i = 0; i < postElements.length; i++) {
   const postId = likeBtn.getAttribute("data-postid");
 
   // attach the click event on every single like button
-  likeBtn.addEventListener("click", function () {
+  likeBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+
     if (likeBtn.classList.contains("like-button--liked")) {
       // we use filter to reassign the array without the post id
       // that we need to remove, because we dont have an incremental
