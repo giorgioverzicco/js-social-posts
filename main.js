@@ -64,12 +64,34 @@ const posts = [
 let likedPosts = [];
 
 const container = document.querySelector("#container");
+const postTpl = document.querySelector("#tpl-post").content;
+
 for (let i = 0; i < posts.length; i++) {
   // template element
-  const post = document.querySelector("#tpl-post").content.cloneNode(true);
+  const post = postTpl.cloneNode(true);
+  const { id, content, media, author, likes, created } = posts[i];
 
-  // when image is missing we need to add a default picture
-  if (!posts[i].author.image) {
+  // set all user data
+  setUserImage(author, post);
+  post.querySelector(".post-meta__author").innerHTML = author.name;
+  post.querySelector(".post__text").innerHTML = content;
+  post.querySelector(".post__image img").src = media;
+  post.querySelector(".like-button").dataset.postid = id;
+  post.querySelector(".js-likes-counter").innerHTML = likes;
+
+  // format date to match italian format
+  post.querySelector(".post-meta__time").innerHTML = italianDateFormat(created);
+
+  // add event to make like buttons interactive
+  addLikeBtnEvent(post);
+
+  // append the entire post to the container
+  container.append(post);
+}
+
+// GLOBAL FUNCTIONS
+function setUserImage(author, post) {
+  if (!author.image) {
     // remove the img block inside the template
     const img = post.querySelector(".post-meta__icon img");
     img.parentElement.removeChild(img);
@@ -80,7 +102,7 @@ for (let i = 0; i < posts.length; i++) {
 
     // make a span containing user initials of the name
     const span = document.createElement("span");
-    const splitedName = posts[i].author.name.split(" ");
+    const splitedName = author.name.split(" ");
     span.innerHTML = splitedName[0][0] + splitedName[1][0];
 
     // append the span to the div with default css
@@ -89,41 +111,26 @@ for (let i = 0; i < posts.length; i++) {
     post.querySelector(".post-meta__icon").appendChild(div);
   } else {
     // if everything is ok then set up the user image
-    post.querySelector(".post-meta__icon img").src = posts[i].author.image;
-    post.querySelector(".post-meta__icon img").alt = posts[i].author.name;
+    post.querySelector(".post-meta__icon img").src = author.image;
+    post.querySelector(".post-meta__icon img").alt = author.name;
   }
-
-  // set all user data
-  post.querySelector(".post-meta__author").innerHTML = posts[i].author.name;
-  post.querySelector(".post__text").innerHTML = posts[i].content;
-  post.querySelector(".post__image img").src = posts[i].media;
-  post.querySelector(".like-button").setAttribute("data-postid", posts[i].id);
-  post.querySelector(".js-likes-counter").innerHTML = posts[i].likes;
-
-  // format date to match italian format
-  const date = posts[i].created.split("-").reverse().join("/");
-  post.querySelector(".post-meta__time").innerHTML = date;
-
-  // append the entire post to the container
-  container.append(post);
 }
 
-// for each post we need to attach an event to
-// make interactive likes
-const postElements = document.querySelectorAll(".post");
-for (let i = 0; i < postElements.length; i++) {
-  const post = postElements[i];
+function italianDateFormat(date) {
+  return date.split("-").reverse().join("/");
+}
 
+function addLikeBtnEvent(post) {
   const likeBtn = post.querySelector(".like-button");
   const likeCounter = post.querySelector(".js-likes-counter");
   // take the post id from the data attribute of the like button
-  const postId = likeBtn.getAttribute("data-postid");
+  const postId = likeBtn.dataset.postid;
 
   // attach the click event on every single like button
   likeBtn.addEventListener("click", function (e) {
     e.preventDefault();
 
-    if (likeBtn.classList.contains("like-button--liked")) {
+    if (this.classList.contains("like-button--liked")) {
       // we use filter to reassign the array without the post id
       // that we need to remove, because we dont have an incremental
       // index that matches the post id to use Array.splice.
