@@ -96,24 +96,21 @@ function setUserImage(author, post) {
     const img = post.querySelector(".post-meta__icon img");
     img.parentElement.removeChild(img);
 
-    // make a div with default css
-    const div = document.createElement("div");
-    div.classList.add("profile-pic", "profile-pic-default");
-
-    // make a span containing user initials of the name
-    const span = document.createElement("span");
-    const splitedName = author.name.split(" ");
-    span.innerHTML = splitedName[0][0] + splitedName[1][0];
-
-    // append the span to the div with default css
-    div.append(span);
-    // append the entire block to the icon block
-    post.querySelector(".post-meta__icon").appendChild(div);
+    post.querySelector(".post-meta__icon").innerHTML += `
+      <div class="profile-pic-default">
+        <span>${getNameInitials(author.name)}</span>
+      </div>
+    `;
   } else {
     // if everything is ok then set up the user image
     post.querySelector(".post-meta__icon img").src = author.image;
     post.querySelector(".post-meta__icon img").alt = author.name;
   }
+}
+
+function getNameInitials(name) {
+  const arr = name.split(" ");
+  return arr[0][0] + arr[1][0];
 }
 
 function italianDateFormat(date) {
